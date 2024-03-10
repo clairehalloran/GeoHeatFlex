@@ -185,6 +185,13 @@ time_constants = pd.concat([LSOAs[['Thermal time constant [h]','Thermal capacity
 
 time_constants.to_file('Results/regional_thermal_time_constants.geojson',driver='GeoJSON')
 
+# also save as a CSV to have a human-readable version
+
+time_constants_pd = pd.DataFrame(time_constants)
+time_constants_pd.drop('geometry', axis='columns',inplace=True)
+
+time_constants_pd.to_csv('Results/regional_thermal_time_constants.csv')
+
 #%% calculate the total thermal energy that can be stored for a given temperature window
 
 delta_T = 3 # celsius
@@ -195,4 +202,4 @@ DZs['Total thermal energy storage [kWh]'] = delta_T*DZs['Thermal capacity [kWh/C
 national_TES_capacity = (LSOAs['Total thermal energy storage [kWh]'].sum() +\
     DZs['Total thermal energy storage [kWh]'].sum())/1e6 #kWh to GWh
     
-print('Total thermal energy storage capacity: '+national_TES_capacity+' GWh(th)')
+print('Total thermal energy storage capacity: '+str(national_TES_capacity)+' GWh(th)')
